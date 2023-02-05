@@ -6,12 +6,12 @@ public class Genero {
 
     private Long id;
     private String nombre;
-    private List<PeliculaSerie> peliculaSerie;
+    private List<String> peliculaSerie;
 
     public Genero() {
     }
 
-    public Genero(Long id, String nombre, List<PeliculaSerie> peliculaSerie) {
+    public Genero(Long id, String nombre, List<String> peliculaSerie) {
         this.id = id;
         this.nombre = nombre;
         this.peliculaSerie = peliculaSerie;
@@ -33,11 +33,11 @@ public class Genero {
         this.nombre = nombre;
     }
 
-    public List<PeliculaSerie> getPeliculaSerie() {
+    public List<String> getPeliculaSerie() {
         return peliculaSerie;
     }
 
-    public void setPeliculaSerie(List<PeliculaSerie> peliculaSerie) {
+    public void setPeliculaSerie(List<String> peliculaSerie) {
 
         this.peliculaSerie = peliculaSerie;
     }

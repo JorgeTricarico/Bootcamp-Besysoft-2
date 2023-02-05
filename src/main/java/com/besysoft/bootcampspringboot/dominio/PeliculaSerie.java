@@ -1,6 +1,8 @@
 package com.besysoft.bootcampspringboot.dominio;
 
 import com.besysoft.bootcampspringboot.utilidades.DatoDummyn;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -9,36 +11,32 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+import static com.besysoft.bootcampspringboot.utilidades.DatoDummyn.formatear;
+
 public class PeliculaSerie {
     private List<Personaje> listaPersonajes = DatoDummyn.listaDePersonajes;
 
     private Long id;
 
     private String titulo;
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private LocalDate fechaDeCreacion;
     private Integer calificacion;
+
+    //@JsonIgnore
     private List<Personaje> personajesAsociados;
 
     public PeliculaSerie() {
     }
 
-    public PeliculaSerie(Long id, String titulo, String fechaDeCreacion, Integer calificacion) {
+    public PeliculaSerie(Long id, String titulo, String fechaDeCreacion, Integer calificacion, List<Personaje> personajesAsociados) {
         this.id = id;
         this.titulo = titulo;
-        this.fechaDeCreacion = LocalDate.parse(fechaDeCreacion);
+        this.fechaDeCreacion = formatear(fechaDeCreacion);
         this.calificacion = calificacion;
-
+        this.personajesAsociados = personajesAsociados;
         List<Personaje> personajes = new ArrayList<>();
 
-        /*listaPersonajes.forEach(personaje -> {
-            personaje.getPeliculaSerieAsociada().forEach(pelicula -> {
-                if (pelicula.getTitulo().equalsIgnoreCase(this.titulo)) {
-                    personajes.add(personaje);
-                }
-            });
-        });*/
-
-        this.personajesAsociados = personajes;
     }
 
     public String getTitulo() {
