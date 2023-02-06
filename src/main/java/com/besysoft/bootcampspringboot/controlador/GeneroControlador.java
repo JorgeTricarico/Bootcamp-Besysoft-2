@@ -2,36 +2,35 @@ package com.besysoft.bootcampspringboot.controlador;
 
 import com.besysoft.bootcampspringboot.dominio.Genero;
 import com.besysoft.bootcampspringboot.dominio.Personaje;
-import com.besysoft.bootcampspringboot.utilidades.DatoDummyn;
-import com.besysoft.bootcampspringboot.utilidades.DatoDummyn.*;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
+import com.besysoft.bootcampspringboot.respositories.interfaces.IGeneroRepository;
+import com.besysoft.bootcampspringboot.services.interfaces.IGeneroService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
-
-import static com.besysoft.bootcampspringboot.utilidades.DatoDummyn.actualizarGeneroPorId;
-import static com.besysoft.bootcampspringboot.utilidades.DatoDummyn.actualizarPersonajePorId;
 
 
 @RestController
 @RequestMapping("/generos")
 public class GeneroControlador {
 
+    @Autowired
+    IGeneroService generoService;
+
     @GetMapping
     public ResponseEntity<?> obtenerTodosLosGeneros(){
-
-        return DatoDummyn.obtenerTodosLosGeneros();
+        return generoService.obtenerTodosLosGeneros();
     }
     @PostMapping
     public ResponseEntity<?> agregarNuevoGenero(@RequestBody Genero genero ) {
-        return DatoDummyn.agregarNuevoGenero(genero);
+        return generoService.agregarNuevoGenero(genero);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity actualizarGenero (@PathVariable Long id, @RequestBody Genero genero){
-        return actualizarGeneroPorId(id, genero);
+    public ResponseEntity actualizarGeneroPorId (@PathVariable Long id, @RequestBody Genero genero){
+        return generoService.actualizarGeneroPorId(id, genero);
     }
 
 }

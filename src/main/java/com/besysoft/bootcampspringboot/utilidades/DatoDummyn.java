@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
+@Deprecated
 public class DatoDummyn {
 
 
@@ -40,7 +40,7 @@ public class DatoDummyn {
         List<Genero> listaDeGeneros = new ArrayList<>(Arrays.asList(new Genero(1L, "Drama", listaPeliculaSerieDrama), new Genero(2L, "Aventura", listaPeliculaSerieAventura), new Genero(3L, "Accion", listaPeliculaSerieAccion), new Genero(4L, "Terror", listaPeliculaSerieTerror)));
 
         return listaDeGeneros;
-    }
+    } //GeneroRepository
 
     private static List<Personaje> crearPersonajes() {
 
@@ -107,7 +107,7 @@ public class DatoDummyn {
         ));*/
 
         return listaPersonajes;
-    }
+    } //PersonajeRepository
 
     private static List<PeliculaSerie> crearPeliculaSerie() {
 
@@ -187,7 +187,7 @@ public class DatoDummyn {
                 laEsclava, laHuerfana1,laHuerfana2,laHuerfana3,laHuerfana4,elJuegoDelMiedo1,elJuegoDelMiedo2,elJuegoDelMiedo3,elJuegoDelMiedo4));
 
         return listaDePeliculas;
-    }
+    } //PeliculaRepository
 
     public static ResponseEntity<?> agregarNuevoGenero(Genero genero) {
 
@@ -206,21 +206,21 @@ public class DatoDummyn {
         DatoDummyn.listaDeGeneros.add(genero);
 
         return new ResponseEntity<>(genero, headers(), HttpStatus.CREATED);
-    }
+    } // GeneroService
 
     public static ResponseEntity<?> badResquest(String mensaje, Object... argumentoFormat) {
         Map<String, Object> mensajeBody = new HashMap<>();
         mensajeBody.put("success", Boolean.FALSE);
         mensajeBody.put("mensaje", String.format(mensaje, argumentoFormat));
         return ResponseEntity.badRequest().body(mensajeBody);
-    }
+    } //Utilidades respuesta
 
     public static ResponseEntity<?> badResquest(String mensaje) {
         Map<String, Object> mensajeBody = new HashMap<>();
         mensajeBody.put("success", Boolean.FALSE);
         mensajeBody.put("mensaje", mensaje);
         return ResponseEntity.badRequest().body(mensajeBody);
-    }
+    } //Utilidades respuesta
 
     // Respuestas NotFound
     public static ResponseEntity<?> notFound(String mensaje) {
@@ -228,20 +228,20 @@ public class DatoDummyn {
         mensajeBody.put("success", Boolean.FALSE);
         mensajeBody.put("mensaje", mensaje);
         return new ResponseEntity<>(mensajeBody, headers(), HttpStatus.NOT_FOUND);
-    }
+    } //Utilidades respuesta
     public static ResponseEntity<?> notFound(String mensaje, String... argumentoFormat) {
         Map<String, Object> mensajeBody = new HashMap<>();
         mensajeBody.put("success", Boolean.FALSE);
         mensajeBody.put("mensaje", String.format(mensaje, argumentoFormat));
         return new ResponseEntity<>(mensajeBody, headers(), HttpStatus.NOT_FOUND);
-    }
+    } //Utilidades respuesta
 
     public static ResponseEntity<?> notFound(Object objeto) {
         return new ResponseEntity<>(objeto, headers(), HttpStatus.NOT_FOUND);
-    }
+    }//Utilidades respuesta
 
 
-    public static ResponseEntity<?> buscarPeliculaPorTituloOGenero(String tituloOGenero) {
+    public static ResponseEntity<?> buscarPeliculaPorTitulobuscarPeliculaPorTituloOGenero(String tituloOGenero) {
         if (tituloOGenero == null) {
             return DatoDummyn.badResquest("El titulo o genero no puede ser nulo");
         }
@@ -267,7 +267,7 @@ public class DatoDummyn {
         }
 
         return new ResponseEntity<>(OPeliculasSeries.get(), headers(), HttpStatus.OK);
-    }
+    } //PeliculaService
 
 
 
@@ -275,7 +275,7 @@ public class DatoDummyn {
         HttpHeaders headers = new HttpHeaders();
         headers.set("app-info", "contacto@bootcamp.com");
         return headers;
-    }
+    } //Utilidades respuesta
 
     public static Optional<PeliculaSerie> buscarComoRepoTituloPelicula(String titulo) {
 
@@ -283,7 +283,7 @@ public class DatoDummyn {
         return DatoDummyn.listaDePeliculas.stream()
                         .filter(pelis -> pelis.getTitulo().equalsIgnoreCase(titulo))
                         .findAny();
-    }
+    } //PeliculaRepository
 
 
 
@@ -301,14 +301,14 @@ public class DatoDummyn {
         } else {
             return buscarPersonajePorNombre(dato);
         }
-    }
+    } //PersonajeService
 
     private static Optional<Personaje> buscarComoRepoPersonajePorNombre(String nombre){
         return DatoDummyn.listaDePersonajes.stream()
                 .filter(pelis -> pelis.getNombre().equalsIgnoreCase(nombre))
                 .distinct()
                 .findAny();
-    }
+    } //PesonajeRepository
 
     public static ResponseEntity<?> buscarPersonajePorNombre( String nombre) {
 
@@ -325,7 +325,7 @@ public class DatoDummyn {
         Personaje personaje = oPersonaje.get();
         HttpHeaders headers = headers();
         return new ResponseEntity<>(personaje, headers, HttpStatus.CREATED);
-    }
+    } //PersonajeService
 
     public static ResponseEntity<?> buscarPersonajesPorEdad(Integer edad) {
 
@@ -337,14 +337,14 @@ public class DatoDummyn {
         Personaje personaje = oPersonaje.get();
 
         return new ResponseEntity<>(personaje,headers(),HttpStatus.ACCEPTED);
-    }
+    } //PersonajeService
 
     public static Optional<Personaje> buscarComoRepoPersonajesPorEdad(Integer edad){
         // Busca algun nombre que contenga la el string {nombre}
         return DatoDummyn.listaDePersonajes.stream()
                 .filter(personaje -> personaje.getEdad() == edad)
                 .findAny();
-    }
+    } //PersonajeRepository
 
     public static List<PeliculaSerie> buscarComoRepoPeliculaPorGenero (String nombreDeGenero){
 
@@ -362,21 +362,18 @@ public class DatoDummyn {
             return oGenero.get().getPeliculaSerie().stream().map(p-> buscarComoRepoTituloPelicula(p).get()).collect(Collectors.toList());
         }
         return null;
-    }
+    } //PeliculaRepository
 
     public static ResponseEntity<List<Genero>> obtenerTodosLosGeneros(){
 
         List<Genero> listaGeneros = DatoDummyn.listaDeGeneros;
         return new ResponseEntity<>(listaGeneros, headers(), HttpStatus.OK);
-    }
-
-
+    } //GeneroService
 
     public static ResponseEntity<?> buscarPeliculaPorFecha(String desde, String hasta) {
 
         LocalDate fechaInicio = formatear(desde);
         LocalDate fechaFinal = formatear(hasta);
-        validarRango(fechaInicio, fechaFinal);
 
         List<PeliculaSerie> oPeliculas = buscarComoRepoPeliculaPorFecha(fechaInicio,fechaFinal);
 
@@ -386,7 +383,7 @@ public class DatoDummyn {
 
 
         return new ResponseEntity(oPeliculas, headers(), HttpStatus.ACCEPTED);
-    }
+    } //ServiceRepository
 
     public static LocalDate formatear(String fecha) {
 
@@ -410,12 +407,7 @@ public class DatoDummyn {
 
     }
 
-    public static void validarRango(LocalDate desde, LocalDate hasta) {
 
-        if (desde.compareTo(hasta) > 0) {
-            throw new IllegalArgumentException("Rango de fecha inválido.");
-        }
-    }
 
     public static  List<PeliculaSerie> buscarComoRepoPeliculaPorFecha(LocalDate fechaInicio, LocalDate fechaFinal){
 
@@ -423,19 +415,13 @@ public class DatoDummyn {
                 .filter(ps -> ps.getFechaDeCreacion().isAfter(fechaInicio.minusDays(1))
                         && ps.getFechaDeCreacion().isBefore(fechaFinal.plusDays(1)))
                 .collect(Collectors.toList());
-    }
-
-    public static List<PeliculaSerie> buscarComoRepoPorCalificaciones(Byte desde, Byte hasta) {
-        return listaDePeliculas.stream()
-                .filter(ps -> ps.getCalificacion() >= desde && ps.getCalificacion()<= hasta)
-                .collect(Collectors.toList());
-    }
+    } //PeliculaResposotory
 
     public static  List<PeliculaSerie> buscarComoRepoPeliculasPorCalificaciones(Integer desde, Integer hasta) {
         return listaDePeliculas.stream()
                 .filter(ps -> ps.getCalificacion() >= desde && ps.getCalificacion()<= hasta)
                 .collect(Collectors.toList());
-    }
+    } //PeliculaRespository
 
     public static ResponseEntity<?> buscarPeliculasPorCalificacion(Integer desde, Integer hasta){
         if (desde == null || hasta == null){
@@ -456,7 +442,7 @@ public class DatoDummyn {
 
 
         return new ResponseEntity(peliculas, headers(), HttpStatus.OK);
-    }
+    } //PeliculaService
 
     public static ResponseEntity<?> buscarPersonajePorRangoDeEdad(Integer desde, Integer hasta){
         if (desde == null || hasta == null){
@@ -476,13 +462,13 @@ public class DatoDummyn {
         }
 
         return new ResponseEntity(personajes, headers(), HttpStatus.OK);
-    }
+    }   //PersonajeService
 
     public static List<Personaje> buscarComoRepoPersonajesPorRangoDeEdad(Integer desde, Integer hasta){
         return listaDePersonajes.stream()
                 .filter(p -> p.getEdad() >= desde && p.getEdad() <= hasta)
                 .collect(Collectors.toList());
-    }
+    } //PersonajeRepository
 
     public static ResponseEntity agregarNuevaPelicula(PeliculaSerie pelicula){
 
@@ -501,7 +487,7 @@ public class DatoDummyn {
         listaDePeliculas.add(pelicula);
 
         return new ResponseEntity(pelicula, headers(), HttpStatus.CREATED);
-    }
+    } //PeliculaService
 
     public static ResponseEntity agregarNuevoPersonaje(Personaje personaje){
 
@@ -530,7 +516,7 @@ public class DatoDummyn {
 
 
         return new ResponseEntity(personaje, headers(), HttpStatus.CREATED);
-    }
+    } //PersonajeService
 
     public static ResponseEntity actualizarPeliculaPorId(Long id, PeliculaSerie peliculaSerie) {
 
@@ -557,13 +543,13 @@ public class DatoDummyn {
             return badResquest("El id %s ingresado no existe", id);
         }
 
-    }
+    } //PeliculaService
 
     public static Optional<PeliculaSerie> buscarComoRepoPeliculaPorID(Long id){
         return listaDePeliculas.stream()
                 .filter(p -> p.getId().equals(id))
                 .findAny();
-    }
+    } //PeliculaRepository
 
     public static ResponseEntity actualizarPersonajePorId(Long id, Personaje personajeAct){
         Optional<Personaje> optionalPersonaje = buscarComoRepoPersonajePorID(id);
@@ -597,7 +583,7 @@ public class DatoDummyn {
         }else{
             return badResquest("El id %s ingresado no existe", id);
         }
-    }
+    } //PersonajeService
 
     public static ResponseEntity actualizarGeneroPorId(Long id, Genero generoAct){
         Optional<Genero> optionalGenero = buscarComoRepoGeneroPorID(id);
@@ -619,19 +605,19 @@ public class DatoDummyn {
         }else{
             return badResquest("El id %s ingresado no existe", id);
         }
-    }
+    } //GeneroService
 
     public static Optional<Personaje> buscarComoRepoPersonajePorID(Long id){
         return listaDePersonajes.stream()
                 .filter(p -> p.getId().equals(id))
                 .findAny();
-    }
+    } //PersonajeRepository
 
     public static Optional<Genero> buscarComoRepoGeneroPorID(Long id){
         return listaDeGeneros.stream()
                 .filter(p -> p.getId().equals(id))
                 .findAny();
-    }
+    } //GeneroRepository
 
 
 }

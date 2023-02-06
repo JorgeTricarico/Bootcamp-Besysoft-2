@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ResposeHttp {
+public class ResponseHttp {
 
     public static ResponseEntity<?> badResquest(String mensaje, Object... argumentoFormat) {
         Map<String, Object> mensajeBody = new HashMap<>();
